@@ -39,32 +39,32 @@
                     return HTMLDivElement;
                 }
 
-                // socket.on('create', function(data) {
-                //     var mySquare = updateSquare(data);
+                socket.on('create', function(data) {
+                     var mySquare = updateSquare(data);
 
-                //     window.addEventListener('mousemove', function(event){
-                //         var x = event.clientX;
-                //         var y = event.clientY;
-                //         var width = parseFloat(mySquare.style.width) || 0;
-                //         var height = parseFloat(mySquare.style.height) || 0;
+                     window.addEventListener('mousemove', function(event){
+                         var x = event.clientX;
+                         var y = event.clientY;
+                         var width = parseFloat(mySquare.style.width) || 0;
+                         var height = parseFloat(mySquare.style.height) || 0;
 
-                //         socket.emit('move', {
-                //             left: (x - (width / 2)) + 'px',
-                //             top: (y - (height / 2)) + 'px'
-                //         });
-                //     });
-                // });
+                         socket.emit('move', {
+                             left: (x - (width / 2)) + 'px',
+                             top: (y - (height / 2)) + 'px'
+                         });
+                     });
+                 });
 
-                // socket.on('update', function(data){
-                //     updateSquare(data);
-                // });
+                 socket.on('update', function(data){
+                     updateSquare(data);
+                 });
 
-                // socket.on('delete', function(data){
-                //     var HTMLDivElement = window.document.getElementById(data.id);
-                //     if ( HTMLDivElement ) {
-                //         HTMLDivElement.parentNode.removeChild(HTMLDivElement);
-                //     }
-                // });
+                 socket.on('delete', function(data){
+                     var HTMLDivElement = window.document.getElementById(data.id);
+                     if ( HTMLDivElement ) {
+                         HTMLDivElement.parentNode.removeChild(HTMLDivElement);
+                     }
+                 });
             });
         });
     </script>
