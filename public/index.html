@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Memory Game</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    var updateSquare;
+        window.document.addEventListener('DOMContentLoaded', function () {
+
+            var socket = io('localhost:8000/game');
+
+            socket.on('connect', function(){
+
+                var createSquare = function(){
+                    var HTMLDivElement = window.document.createElement('div');
+
+                    window.document.body.appendChild(HTMLDivElement);
+
+                    return HTMLDivElement;
+                }
+
+                updateSquare = function(data) {
+                    var HTMLDivElement = window.document.getElementById(data.id);
+     
+                    if (!HTMLDivElement) {
+                        HTMLDivElement = createSquare();
+                    }
+
+                    HTMLDivElement.id = data.id;
+                    HTMLDivElement.style.width = data.width;
+                    HTMLDivElement.style.height = data.height;
+                    HTMLDivElement.style.top = data.top;
+                    HTMLDivElement.style.left = data.left;
+                    HTMLDivElement.style.position = 'absolute';
+                    HTMLDivElement.style.backgroundColor = data.backgroundColor;
+                    
+                    return HTMLDivElement;
+                }
+
+                // socket.on('create', function(data) {
+                //     var mySquare = updateSquare(data);
+
+                //     window.addEventListener('mousemove', function(event){
+                //         var x = event.clientX;
+                //         var y = event.clientY;
+                //         var width = parseFloat(mySquare.style.width) || 0;
+                //         var height = parseFloat(mySquare.style.height) || 0;
+
+                //         socket.emit('move', {
+                //             left: (x - (width / 2)) + 'px',
+                //             top: (y - (height / 2)) + 'px'
+                //         });
+                //     });
+                // });
+
+                // socket.on('update', function(data){
+                //     updateSquare(data);
+                // });
+
+                // socket.on('delete', function(data){
+                //     var HTMLDivElement = window.document.getElementById(data.id);
+                //     if ( HTMLDivElement ) {
+                //         HTMLDivElement.parentNode.removeChild(HTMLDivElement);
+                //     }
+                // });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <p>Memory Game 2019</p>
+</body>
+
+</html>

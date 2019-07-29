@@ -1,0 +1,162 @@
+body,
+html {
+	margin: 10 0 0 0;
+	padding: 10 0 0 0;
+	background-color: #e4ee6f;
+	cursor: auto;
+	opacity: 0.8;
+}
+
+#msg {
+	left: 35%;
+	position: fixed;
+	text-align: center;
+	top: 14%;
+	width: 30%;
+	z-index: 1;
+}
+
+#copyright {
+	width: 100%;
+	color: white;
+	margin-top: 50px;
+	padding: 10px;
+	background-color: #555252;
+	border-radius: .5 .5 .5 .5;
+	text-align: center;
+}
+
+.jumbotron {
+	margin-top: 15px;
+}
+
+.container {
+	background: url('/src/img/body-bg.png') top center no-repeat;
+	border: 2px solid;
+	border-radius: 0.5em;
+	margin-top: 25px;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.wrapper {
+	max-width: 900px;
+	width: 100%;
+	margin: 0 auto;
+	margin-top: 10px;
+	position: relative;
+}
+
+h1 {
+	text-align: center;
+	font-family: cursive;
+	color: rgba(0, 0, 0, 0.45);
+	margin-top: 15px;
+}
+
+h2 {
+	text-align: center;
+	font-family: cursive;
+	color: rgba(0, 0, 0, 0.45);
+}
+
+img {
+	max-width: 86%;
+	height: auto;
+	margin-top: 20px;
+}
+
+.table:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.field {
+	width: 14%;
+	margin: 1% 1%;
+	height: 150px;
+	border: 1px solid #000;
+	border-radius: 8px;
+	float: left;
+	cursor: pointer;
+}
+
+.inner-wrap {
+	width: 100%;
+	height: 100%;
+	transition: all 0.6s;
+	-webkit-transition: all 0.6s;
+	transform-style: preserve-3d;
+	position: relative;
+}
+
+.front {
+	background: url('/src/img/bg.jpg') no-repeat top center;
+	width: 100%;
+	height: 100%;
+	border-radius: 8px;
+	z-index: 2;
+	transform: rotateY(0deg);
+	-webkit-transform: rotateY(0deg);
+	-moz-transform: rotateY(0deg);
+	-o-transform: rotateY(0deg);
+}
+
+.flipped {
+	transform: rotateY(180deg);
+	-webkit-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+	-o-transform: rotateY(180deg);
+
+}
+
+.front,
+.back {
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.back {
+	transform: rotateY(180deg);
+	-webkit-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+	-o-transform: rotateY(180deg);
+	text-align: center;
+}
+
+.result p {
+	font-size: 46px;
+	font-family: cursive;
+	color: rgb(217, 103, 29);
+}
+
+.result {
+	position: absolute;
+	right: -185px;
+	top: 58px;
+}
+
+p.counter {
+	text-align: center;
+}
+
+span {
+	text-align: center;
+	display: block;
+	font-family: cursive;
+}
+
+.wrapper>p {
+	text-align: center;
+	margin-bottom: 20px;
+}

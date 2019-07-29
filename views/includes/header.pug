@@ -1,0 +1,15 @@
+if msg
+    p(id='msg' class='alert alert-' + msg.class)=msg.text
+header
+    h1= title
+    nav.navbar
+        ul.nav
+            li.nav-item
+                a(href="/" class="nav-link") Home
+            if !session.identifiant
+                li.nav-item
+                    a(href="/connect" class="nav-link") Login
+                    //- img#moi(src="mon-avatar.png" alt="")
+            if session.identifiant
+                li.nav-item
+                    a(href="/disconnect" class="nav-link") Sign out

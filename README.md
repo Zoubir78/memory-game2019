@@ -1,2 +1,2 @@
-# memory-game2019
-Jeu multi-joueurs avec JavaScript
+# Jeu-multi-Javascript
+Jeu multijoueurs en JavaScript
