@@ -10,7 +10,7 @@ const path = require('path');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 
-app.use('/', express.static(path.normalize(`${__dirname}/public`)));
+// app.use('/', express.static(path.normalize(`${__dirname}/public`)));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
@@ -42,48 +42,48 @@ let HTTPServer = app.listen(port, function () {
  * Partie Websocket
  */
 
-const SocketIo = require('socket.io');
+// const SocketIo = require('socket.io');
 
-let ioServer = new SocketIo(HTTPServer);
+// let ioServer = new SocketIo(HTTPServer);
 
-let allSquares = {};
+// let allSquares = {};
 
-ioServer.on('connection', function(socket){
+// ioServer.on('connection', function(socket){
 
-    let myData = {
-        id: 'carre-' + Math.round(Math.random() * 10000),
-        top: '0px',
-        left: '0px',
-        width: '75px',
-        height: '75px',
-        backgroundColor: '#'+(Math.random()*0xFFFFFF<<0).toString(16)
-    };
+//     let myData = {
+//         id: 'carre-' + Math.round(Math.random() * 10000),
+//         top: '0px',
+//         left: '0px',
+//         width: '75px',
+//         height: '75px',
+//         backgroundColor: '#'+(Math.random()*0xFFFFFF<<0).toString(16)
+//     };
 
-    allSquares[myData.id] = myData;
+//     allSquares[myData.id] = myData;
 
-    socket.emit('create', myData);
+//     socket.emit('create', myData);
 
-    socket.on('move', function(data){
+//     socket.on('move', function(data){
 
-        data.id = myData.id;
-        data.width = myData.width;
-        data.height = myData.height;
-        data.backgroundColor = myData.backgroundColor;
+//         data.id = myData.id;
+//         data.width = myData.width;
+//         data.height = myData.height;
+//         data.backgroundColor = myData.backgroundColor;
 
-        for (let property in allSquares ) {
-            if (property !== myData.id) {
-                // On boucle sur tous les carrés en jeu pour tester des conditions sur les propriétés des carrés
-            }
-        }
+//         for (let property in allSquares ) {
+//             if (property !== myData.id) {
+//                 // On boucle sur tous les carrés en jeu pour tester des conditions sur les propriétés des carrés
+//             }
+//         }
 
-        console.log(data);
+//         console.log(data);
 
-        ioServer.emit('update', data);
+//         ioServer.emit('update', data);
 
-    });
+//     });
     
-    socket.on('disconnect', function(){
-        ioServer.emit('delete', myData);
-        delete allSquares[myData.id];
-    });
-});
+//     socket.on('disconnect', function(){
+//         ioServer.emit('delete', myData);
+//         delete allSquares[myData.id];
+//     });
+// });

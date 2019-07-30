@@ -6,7 +6,6 @@ const app = express();
 
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://zoubir94:Zoubir-94@cluster0-2hepw.mongodb.net/joueurs?retryWrites=true&w=majority";
-// const url = 'mongodb://localhost:27017';
 const dbName = 'game';
 
 var datas = {};
@@ -25,6 +24,11 @@ router.get('/', function (req, res, next) {
 router.get('/game', function (req, res, next) {
     datas.title = 'Amusez-vous bien !';
     res.render('game', datas);
+});
+
+router.get('/register', function (req, res, next) {
+    datas.title = 'Veuillez vous enregistrer pour jouer';
+    res.render('register', datas);
 });
 
 router.get('/connect', function (req, res, next) {
@@ -84,6 +88,44 @@ router.get('/check', function (req, res, next) {
                 class: 'danger'
             };
             res.redirect('/connect');
+        }
+    });
+});
+
+router.get('/register', function (req, res, next) {
+    MongoClient.connect(uri, {
+        useNewUrlParser: true
+    }, function (err, client) {
+        const db = client.db(dbName);
+        const collection = db.collection('joueurs');
+        const id = new ObjectId(req.body.id);
+        if (req.body.identifiant && req.body.mdp && id) {
+            collection.insert({
+                _id:id,
+                identifiant: req.body.identifiant,
+                mdp: req.body.mdp
+            }, function (err) {
+                client.close();
+                // if (req.query.identifiant && req.query.mdp) {
+                //     app.locals.msg = {
+                //         text: 'You are registered',
+                //         class: 'success'
+                //     };
+                //     res.redirect('/connect');
+                // } else {
+                //     app.locals.msg = {
+                //         text: 'Bad informations',
+                //         class: 'danger'
+                //     };
+                //     res.redirect('/register');
+                // }
+            });
+        } else {
+            app.locals.msg = {
+                text: 'Missing datas',
+                class: 'danger'
+            };
+            res.redirect('/register');
         }
     });
 });

@@ -9,7 +9,8 @@ header
             if !session.identifiant
                 li.nav-item
                     a(href="/connect" class="nav-link") Login
-                    //- img#moi(src="mon-avatar.png" alt="")
+                li.nav-item
+                    a(href="/register" class="nav-link") Register
             if session.identifiant
                 li.nav-item
                     a(href="/disconnect" class="nav-link") Sign out

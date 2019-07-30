@@ -9,7 +9,6 @@ html {
 
 #msg {
 	left: 35%;
-	position: fixed;
 	text-align: center;
 	top: 14%;
 	width: 30%;
@@ -34,7 +33,7 @@ html {
 	background: url('/src/img/body-bg.png') top center no-repeat;
 	border: 2px solid;
 	border-radius: 0.5em;
-	margin-top: 25px;
+	margin-top: 50px;
 }
 
 * {
