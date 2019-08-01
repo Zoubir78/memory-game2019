@@ -2,12 +2,15 @@ include includes/head.pug
 .container
     include includes/header.pug
     section
-        form(action="/register" method="get" class="col-7 offset-2")
+        form(action="/register" method="post" class="col-7 offset-2")
             .form-group
                 label(for="identifiant") Identifiant
-                input(type="text" name="identifiant" class="form-control")
+                input(type="text" name="identifiant" class="form-control" required)
             .form-group
                 label(for="mdp") Mot de passe
-                input(type="password" name="mdp" class="form-control")
+                input(type="password" name="mdp" class="form-control" required)
+            .form-group
+                label(for="avatar") Avatar
+                input(type="text" name="avatar" placeholder="URL de votre avatar" class="form-control" required)
             button(type="submit" class="btn btn-primary col-4 offset-0") Register
     include includes/footer.pug

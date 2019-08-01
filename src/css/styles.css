@@ -47,7 +47,7 @@ html {
 .wrapper {
 	max-width: 900px;
 	width: 100%;
-	margin: 0 auto;
+	margin: 0 auto 10px auto;
 	margin-top: 10px;
 	position: relative;
 }
@@ -63,6 +63,7 @@ h2 {
 	text-align: center;
 	font-family: cursive;
 	color: rgba(0, 0, 0, 0.45);
+	padding: 10 auto 10 auto;
 }
 
 img {

@@ -27,8 +27,16 @@ router.get('/game', function (req, res, next) {
 });
 
 router.get('/register', function (req, res, next) {
-    datas.title = 'Veuillez vous enregistrer pour jouer';
-    res.render('register', datas);
+    if (req.body.identifiant) {
+        app.locals.msg = {
+            text: 'You are already registered',
+            class: 'primary'
+        };
+        res.redirect('/connect');
+    } else {
+        datas.title = 'Register to play';
+        res.render('register', datas);
+    }
 });
 
 router.get('/connect', function (req, res, next) {
@@ -68,12 +76,14 @@ router.get('/check', function (req, res, next) {
                 client.close();
                 if (docs.length) {
                     req.session.identifiant = docs[0].identifiant;
-                    req.session.niveau = docs[0].niveau;
+                    req.session.mdp = docs[0].mdp;
                     app.locals.msg = {
                         text: 'You are connected',
                         class: 'success'
                     };
+                    // datas.avatar = req.query.avatar;
                     res.redirect('/game');
+
                 } else {
                     app.locals.msg = {
                         text: 'Bad informations',
@@ -92,33 +102,24 @@ router.get('/check', function (req, res, next) {
     });
 });
 
-router.get('/register', function (req, res, next) {
+router.post('/register', function (req, res, next) {
     MongoClient.connect(uri, {
         useNewUrlParser: true
     }, function (err, client) {
         const db = client.db(dbName);
         const collection = db.collection('joueurs');
-        const id = new ObjectId(req.body.id);
-        if (req.body.identifiant && req.body.mdp && id) {
-            collection.insert({
-                _id:id,
+        if (req.body.identifiant && req.body.mdp) {
+            collection.insertOne({
                 identifiant: req.body.identifiant,
-                mdp: req.body.mdp
+                mdp: req.body.mdp,
+                avatar: req.body.avatar
             }, function (err) {
                 client.close();
-                // if (req.query.identifiant && req.query.mdp) {
-                //     app.locals.msg = {
-                //         text: 'You are registered',
-                //         class: 'success'
-                //     };
-                //     res.redirect('/connect');
-                // } else {
-                //     app.locals.msg = {
-                //         text: 'Bad informations',
-                //         class: 'danger'
-                //     };
-                //     res.redirect('/register');
-                // }
+                app.locals.msg = {
+                    text: 'You are registered',
+                    class: 'success'
+                };
+                res.redirect('/connect');
             });
         } else {
             app.locals.msg = {

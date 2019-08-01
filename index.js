@@ -1,3 +1,6 @@
+
+/************** Côté serveur **************/
+
 'use strict';
 
 /**
@@ -10,7 +13,7 @@ const path = require('path');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 
-// app.use('/', express.static(path.normalize(`${__dirname}/public`)));
+app.use('/', express.static(path.normalize(`${__dirname}/public`)));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
@@ -34,7 +37,7 @@ app.use(function (req, res, next) {
 });
 
 const port = 8000;
-let HTTPServer = app.listen(port, function () {
+let httpServer = app.listen(port, function () {
     console.log(`Écoute sur le port: ${port}`);
 });
 
@@ -42,48 +45,102 @@ let HTTPServer = app.listen(port, function () {
  * Partie Websocket
  */
 
-// const SocketIo = require('socket.io');
+const SocketIo = require('socket.io');
 
-// let ioServer = new SocketIo(HTTPServer);
+let ioServer = new SocketIo(httpServer);
 
-// let allSquares = {};
+/************* Déclaration des variables **************/
 
-// ioServer.on('connection', function(socket){
+var checkArray = []; // vérifier si les deux champs cliqués ont le même fruit
+var idCheck = []; // tableau pour stocker les ID de champs cliqués afin que je puisse supprimer la classe "retournée" si elles sont différentes
+var counter = 0;
+var end = 0; // pour détecter si tous les champs sont complétés
+// var win = new Audio("/src/mp3/win.mp3");
 
-//     let myData = {
-//         id: 'carre-' + Math.round(Math.random() * 10000),
-//         top: '0px',
-//         left: '0px',
-//         width: '75px',
-//         height: '75px',
-//         backgroundColor: '#'+(Math.random()*0xFFFFFF<<0).toString(16)
-//     };
+var images = [
+    "/src/img/ananas_uukegu.png",
+    "/src/img/apple_khwnkz.png",
+    "/src/img/apricot_bvge7o.png",
+    "/src/img/banana_xks3tr.png",
+    "/src/img/cake_pqvm0z.png",
+    "/src/img/cherry_gtzbks.png",
+    "/src/img/grapes_wshdtl.png",
+    "/src/img/lemon_hfksjg.png",
+    "/src/img/pear_vdpyqc.png",
+    "/src/img/plum_rncxxc.png",
+    "/src/img/strawberry_yr6sa1.png",
+    "/src/img/watermelon_wfzuz8.png",
+    "/src/img/ananas_uukegu.png",
+    "/src/img/apple_khwnkz.png",
+    "/src/img/apricot_bvge7o.png",
+    "/src/img/banana_xks3tr.png",
+    "/src/img/cake_pqvm0z.png",
+    "/src/img/cherry_gtzbks.png",
+    "/src/img/grapes_wshdtl.png",
+    "/src/img/lemon_hfksjg.png",
+    "/src/img/pear_vdpyqc.png",
+    "/src/img/plum_rncxxc.png",
+    "/src/img/strawberry_yr6sa1.png",
+    "/src/img/watermelon_wfzuz8.png"
+];
 
-//     allSquares[myData.id] = myData;
+ioServer.on('connection', function(socket){
 
-//     socket.emit('create', myData);
-
-//     socket.on('move', function(data){
-
-//         data.id = myData.id;
-//         data.width = myData.width;
-//         data.height = myData.height;
-//         data.backgroundColor = myData.backgroundColor;
-
-//         for (let property in allSquares ) {
-//             if (property !== myData.id) {
-//                 // On boucle sur tous les carrés en jeu pour tester des conditions sur les propriétés des carrés
-//             }
-//         }
-
-//         console.log(data);
-
-//         ioServer.emit('update', data);
-
-//     });
+    function clicked() { // clicked function so i can unbind click event to prevet shit like clicking more then 2 fields at one try
+        if ($(this).find(".inner-wrap").hasClass("flipped")) {
+            return;
+        }
+        $(this).find(".inner-wrap").toggleClass("flipped");
+        checkArray.push($(this).find("img").attr("src"));
+        idCheck.push($(this).attr("id"));
+        check();
+    }
     
-//     socket.on('disconnect', function(){
-//         ioServer.emit('delete', myData);
-//         delete allSquares[myData.id];
-//     });
-// });
+    $(".field").on("click", clicked);
+
+    function check() {
+        if (checkArray.length === 2) { // nous vérifions si les champs sont cliqués 2 fois
+            $(".field").off("click", clicked); // désactivation de l'événement de clic
+            setTimeout(function(){
+                if (checkArray[0] !== checkArray[1]) { // s'il n'y a pas de correspondance
+                    $("#" + idCheck[0]).find(".inner-wrap").removeClass("flipped"); // retourner le champ
+                    $("#" + idCheck[1]).find(".inner-wrap").removeClass("flipped"); // deuxième retour aussi
+                    counter++;
+                    checkArray = []; //tableau de vérification vide pour les 2 prochains clics
+                    idCheck = []; // idem avec celui-ci
+                    $(".field").on("click", clicked); // relier le clic en arrière
+                } else {
+                    spark.play();
+                    counter++;
+                    end += 2; // s'il y a correspondance, "end" est augmenté de 2 alors que 2 champs sont découverts
+                    checkArray = []; // tableau vide pour le prochain essai
+                    idCheck = []; // celui-ci aussi
+                    checkEnd(); // vérifier si le jeu est terminé
+                    $(".field").on("click", clicked); // cliquez à nouveau
+                }
+                document.querySelector(".counter").innerHTML = counter;
+            }, 800);	
+        };
+    };
+
+    socket.emit('checkEnd', data);
+
+    socket.on('shuffle', function(data){
+
+        function shuffleArray(array) { // Tableau aléatoire avec des images
+            
+            for (var i = array.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+            return array;
+        }
+    });
+    
+    socket.on('disconnect', function(){
+        ioServer.emit('restart', images);
+    });
+    startGame();
+});
