@@ -36,9 +36,9 @@ app.use(function (req, res, next) {
     });
 });
 
-const port = 8000;
-let httpServer = app.listen(port, function () {
-    console.log(`Écoute sur le port: ${port}`);
+const PORT = process.env.PORT || 8000;
+let httpServer = app.listen(PORT, function () {
+    console.log(`Écoute sur le port: ${PORT}`);
 });
 
 /**
